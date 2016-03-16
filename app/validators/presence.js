@@ -54,11 +54,11 @@ export default Base.extend({
 
   validate(value, options) {
     if (options.presence === true && !this._isPresent(value)) {
-      return this.createErrorMessage('blank', value, options);
+      return this.createError('blank', value, options);
     }
 
     if(options.presence === false && this._isPresent(value)) {
-      return this.createErrorMessage('present', value, options);
+      return this.createError('present', value, options);
     }
 
     return true;

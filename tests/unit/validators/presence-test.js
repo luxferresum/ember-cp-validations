@@ -13,7 +13,7 @@ var options, validator, message;
 var set = Ember.set;
 
 moduleFor('validator:presence', 'Unit | Validator | presence', {
-  needs: ['validator:messages'],
+  needs: ['validator:messages', 'validator:message-object'],
   setup: function() {
     validator = this.subject();
   }
@@ -44,7 +44,7 @@ test('presence - value not present', function(assert) {
 
   options = { presence: true };
   message = validator.validate(undefined, options);
-  assert.equal(message, "This field can't be blank");
+  assert.equal(message.get('message'), "This field can't be blank");
 });
 
 
@@ -53,7 +53,7 @@ test('absence - value present', function(assert) {
 
   options = { presence: false };
   message = validator.validate('value', options);
-  assert.equal(message, "This field must be blank");
+  assert.equal(message.get('message'), "This field must be blank");
 });
 
 test('absence - value not present', function(assert) {
