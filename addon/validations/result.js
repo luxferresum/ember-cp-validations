@@ -82,6 +82,17 @@ var ValidationsObject = Ember.Object.extend({
     return makeArray(get(this, 'message'));
   }),
 
+  messageObject: null,
+  _message: null,
+  message: computed('messageObject.message', {
+    get() {
+      return get(this, '_message') || get(this, 'messageObject.message');
+    },
+    set(key, val) {
+      return set(this, '_message', val);
+    }
+  }),
+
   error: computed('message', 'isInvalid', 'attribute', function() {
     if (get(this, 'isInvalid')) {
       return ValidationError.create({
@@ -236,7 +247,12 @@ export default Ember.Object.extend({
       return;
     }
 
-    if (get(result, 'isValidations')) {
+    if(get(result, 'isMessageObject')) {
+      setProperties(validations, {
+        messageObject: result,
+        isValid: false,
+      });
+    } else if (get(result, 'isValidations')) {
       set(this, '_validations', result);
     } else if (isArray(result) && emberArray(result).isEvery('isValidations', true)) {
       var validationResultsCollection = ValidationResultCollection.create({

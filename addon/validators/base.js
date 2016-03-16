@@ -6,6 +6,7 @@
 import Ember from 'ember';
 import Messages from './messages';
 import getOwner from 'ember-getowner-polyfill';
+import MessageObject from './message-object';
 
 const {
   get,
@@ -13,6 +14,7 @@ const {
   merge,
   isNone,
 } = Ember;
+
 
 /**
  * @class Base
@@ -187,6 +189,15 @@ export default Ember.Object.extend({
     }
 
     return message.trim();
+  },
+  createError(type, value, options = {}) {
+    let attribute = get(this, 'attribute');
+    return MessageObject.create(getOwner(this).ownerInjection(), {
+      type,
+      attribute,
+      value,
+      options,
+    });
   }
 });
 
